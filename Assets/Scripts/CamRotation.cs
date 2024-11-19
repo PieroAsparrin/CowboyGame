@@ -36,7 +36,7 @@ public class CamRotation : MonoBehaviour
 
         // Rotación vertical (giro alrededor del eje X), limitando el valor para evitar rotaciones extremas
         xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f);  // Limita la rotación para evitar giros completos
+        xRotation = Mathf.Clamp(xRotation, -30f, 22f);  // Limita la rotación para evitar giros completos
 
         // Aplicar la rotación vertical a la cámara
         Camera.main.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
