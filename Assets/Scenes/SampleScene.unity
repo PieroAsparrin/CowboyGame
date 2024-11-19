@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028331, g: 0.2257133, b: 0.3069217, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -184,7 +184,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 37932b8a2b40ca443ac32db9976a5975, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -410,7 +410,7 @@ Transform:
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
   m_LocalRotation: {x: 0.020816695, y: -0, z: -0, w: 0.99978334}
-  m_LocalPosition: {x: 0.483, y: 1.892, z: -1.662}
+  m_LocalPosition: {x: 0.497, y: 1.554, z: -1.241}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -428,7 +428,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb4256870b9655a43824a94242ac4544, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MouseSensitivity: 600
   PlayerPosition: {fileID: 1506761116}
+  upLimit: -19
+  downLimit: 22
 --- !u!1 &1282715925
 GameObject:
   m_ObjectHideFlags: 0
@@ -568,6 +571,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e335d2c875e2a548b08f49e3f8e89dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 10
 --- !u!54 &1506761115
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -686,6 +690,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e335d2c875e2a548b08f49e3f8e89dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 10
 --- !u!54 &1510195501
 Rigidbody:
   m_ObjectHideFlags: 0

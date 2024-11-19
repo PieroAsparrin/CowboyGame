@@ -9,7 +9,7 @@ public class PayerControler : MonoBehaviour
     private new Rigidbody rb;
 
     // Declaramos una variable privada llamada 'speed' para controlar la velocidad de movimiento del personaje. Inicialmente es 10.
-    private float speed = 10f;
+    public float speed = 10f;
 
     // Declaramos una variable privada llamada 'ani' de tipo Animator, que nos permitirá controlar las animaciones del personaje.
     private Animator ani;
