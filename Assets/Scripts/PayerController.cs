@@ -16,10 +16,8 @@ public class PayerController : MonoBehaviour
     public Transform groundCheck;
     public float sphereRadius = 0.3f;
     public LayerMask groundMask;
-    public GameObject gunPrefab;
-    public GameObject gunHolder;
+
     bool isGrounded;
-    private bool gunActive = false;
 
     Vector3 velocity;
 
@@ -75,18 +73,6 @@ public class PayerController : MonoBehaviour
         {
             // Desactivamos la animación de movimiento configurando el parámetro "isMove" en el Animator a false.
             ani.SetBool("isMove", false);
-        }
-
-        if (Input.GetKeyDown(KeyCode.E) && !gunActive)
-        {
-            GameObject gun = Instantiate(gunPrefab, gunHolder.transform);
-            gunActive = true;
-        }
-
-        if (Input.GetKeyDown(KeyCode.R) && gunActive)
-        {
-            Destroy(gunPrefab);
-            gunActive = false;
         }
     }
 }
