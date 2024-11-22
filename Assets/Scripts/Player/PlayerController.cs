@@ -69,18 +69,7 @@ public class PlayerController : MonoBehaviour
 
         characterController.Move(velocity * Time.deltaTime);
 
-
-        // Si el usuario está presionando alguna tecla que genere movimiento (horizontal o vertical no son cero):
-        if (horizontal != 0f || vertical != 0f)
-        {
-            // Activamos la animación de movimiento configurando el parámetro "isMove" en el Animator a true.
-            ani.SetBool("isMove", true);
-        }
-        else // Si el personaje no se está moviendo (ni horizontal ni verticalmente):
-        {
-            // Desactivamos la animación de movimiento configurando el parámetro "isMove" en el Animator a false.
-            ani.SetBool("isMove", false);
-        }
+        MovementCheck(vertical, horizontal);
     }
 
     public void JumpCheck() {
@@ -105,6 +94,45 @@ public class PlayerController : MonoBehaviour
         {
             sprintSpeed = 1;
             staminaSlider.UseStamina(0);
+        }
+    }
+
+    public void MovementCheck(float vertical, float horizontal) {
+
+        if (vertical > 0f)
+        {
+            ani.SetBool("walkingForward", true);
+        }
+        else
+        {
+            ani.SetBool("walkingForward", false);
+        }
+
+        if (vertical < 0f)
+        {
+            ani.SetBool("walkingBackwards", true);
+        }
+        else
+        {
+            ani.SetBool("walkingBackwards", false);
+        }
+
+        if (horizontal > 0f) 
+        {
+            ani.SetBool("walkingRight", true);
+        }
+        else
+        {
+            ani.SetBool("walkingRight", false);
+        }
+
+        if (horizontal < 0f)
+        {
+            ani.SetBool("walkingLeft", true);
+        }
+        else
+        {
+            ani.SetBool("walkingLeft", false);
         }
     }
 }
