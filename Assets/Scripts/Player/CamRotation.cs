@@ -5,41 +5,37 @@ using UnityEngine;
 
 public class CamRotation : MonoBehaviour
 {
-    public float MouseSensitivity = 0f;//Sensibilidad
+    public float MouseSensitivity = 0f; // Sensibilidad del ratón
 
-    // [SerializeField] private Transform CameraTransform;
-    [SerializeField] private Transform PlayerPosition;
+    // [SerializeField] private Transform CameraTransform; // Referencia a la transformación de la cámara (comentada)
+    [SerializeField] private Transform PlayerPosition; // Referencia a la posición del jugador (para rotarlo horizontalmente)
 
-    private float yRotation;
-    private float xRotation;
+    private float yRotation; // Rotación alrededor del eje Y (horizontal)
+    private float xRotation; // Rotación alrededor del eje X (vertical)
 
-    public float upLimit = -19f; //Establecerá el limite maximo para subir la camara
-    public float downLimit = 22f; //Establecerá el limite manimo para bajar la camara
+    public float upLimit = -19f; // Límite máximo para la rotación hacia arriba (evita que la cámara suba demasiado)
+    public float downLimit = 22f; // Límite máximo para la rotación hacia abajo (evita que la cámara baje demasiado)
 
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked; // Bloquea el cursor en el centro de la pantalla
+        Cursor.visible = false; // Oculta el cursor para una mejor experiencia en primera persona
     }
 
     void Update()
     {
-        
+        // Se obtiene el movimiento del ratón en los ejes X y Y (sin procesar)
+        float mouseX = Input.GetAxisRaw("Mouse X") * MouseSensitivity * Time.deltaTime; // Movimiento horizontal del ratón
+        float mouseY = Input.GetAxisRaw("Mouse Y") * MouseSensitivity * Time.deltaTime; // Movimiento vertical del ratón
 
-        // Se obtiene el movimiento del ratón en el eje X y Y
-        float mouseX = Input.GetAxisRaw("Mouse X") * MouseSensitivity * Time.deltaTime;
-        float mouseY = Input.GetAxisRaw("Mouse Y") * MouseSensitivity * Time.deltaTime;
+        // Rotación horizontal (giro alrededor del eje Y del jugador)
+        PlayerPosition.Rotate(Vector3.up * mouseX); // Rota al jugador en el eje Y en función del movimiento del ratón
 
-
-
-        // Rotación horizontal (giro alrededor del eje Y)
-        PlayerPosition.Rotate(Vector3.up * mouseX);
-
-        // Rotación vertical (giro alrededor del eje X), limitando el valor para evitar rotaciones extremas
-        xRotation -= mouseY;//Utilizo -= porque el ejeY del raton esta invertido
-        xRotation = Mathf.Clamp(xRotation, upLimit, downLimit);  // Limita la rotación para evitar giros completos
+        // Rotación vertical (giro alrededor del eje X de la cámara), limitando el valor para evitar rotaciones extremas
+        xRotation -= mouseY; // El eje Y del ratón está invertido, por eso usamos -= para que el movimiento sea coherente
+        xRotation = Mathf.Clamp(xRotation, upLimit, downLimit);  // Limita la rotación para que no haya giros extremos de la cámara
 
         // Aplicar la rotación vertical a la cámara
-        Camera.main.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        Camera.main.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f); // Aplica la rotación vertical a la cámara
     }
 }
