@@ -6677,7 +6677,7 @@ Transform:
   m_GameObject: {fileID: 594221334}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: -0, w: 0}
-  m_LocalPosition: {x: -30, y: 0, z: 20}
+  m_LocalPosition: {x: -10.13, y: 0, z: 0.31}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -6704,8 +6704,9 @@ MonoBehaviour:
   ani: {fileID: 594221340}
   angulo: {x: 0, y: 0, z: 0, w: 0}
   grado: 0
-  target: {fileID: 0}
+  target: {fileID: 1506761113}
   atacando: 0
+  health: 100
 --- !u!95 &594221340
 Animator:
   serializedVersion: 5
@@ -9316,7 +9317,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ce1db9686dedbb418cd670cbf48babc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ammo: 35
+  ammo: 14
 --- !u!65 &750336437
 BoxCollider:
   m_ObjectHideFlags: 0
