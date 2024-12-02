@@ -12,7 +12,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             // Si el objeto es de tipo "GunAmmo", sumamos la cantidad de munición que tiene el objeto
             // al total de munición en el GameManager. Este valor lo obtiene del script 'AmmoBox'.
-            GameManager.Instance.gunAmmo += other.gameObject.GetComponent<AmmoBox>().ammo;
+            GameManager.Instance.bagAmmo += other.gameObject.GetComponent<AmmoBox>().ammo;
 
             // Después de recoger la munición, destruimos el objeto de munición (ya no es necesario)
             Destroy(other.gameObject);

@@ -5,10 +5,12 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public Text ammoText;         // Referencia al componente Text para la cantidad de munición.
-    public Slider healthSlider;   // Referencia al Slider que representa la salud del jugador.
-    private float maxHealth = 100f; // Salud máxima del jugador.
-    public float currentHealth;   // Salud actual del jugador.
+    public Text gunAmmoText;// Referencia al componente Text para la cantidad de munición.
+    public Text bagAmmoText;
+
+    public Slider healthSlider;// Referencia al Slider que representa la salud del jugador.
+    private float maxHealth = 100f;// Salud máxima del jugador.
+    public float currentHealth;// Salud actual del jugador.
 
     public static GameManager Instance { get; private set; } // Instancia estática del GameManager.
 
@@ -36,7 +38,8 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        ammoText.text = gunAmmo.ToString() + " I " + bagAmmo.ToString(); // Actualiza el texto de munición.
+        gunAmmoText.text = gunAmmo.ToString() + " I ";
+        bagAmmoText.text = "  " + bagAmmo.ToString();
 
         // Controles para daño y curación.
         if (Input.GetKeyDown(KeyCode.I)) TakeDamage(10f); // Reduce salud en 10 al presionar 'I'.
@@ -104,6 +107,7 @@ public class GameManager : MonoBehaviour
     // Método para actualizar el texto de munición.
     private void UpdateAmmoText()
     {
-        ammoText.text = gunAmmo.ToString() + "|" + bagAmmo.ToString(); // Actualiza el texto con el cargador y la bolsa.
+        gunAmmoText.text = gunAmmo.ToString() + " I ";
+        bagAmmoText.text = "  "+bagAmmo.ToString();
     }
 }

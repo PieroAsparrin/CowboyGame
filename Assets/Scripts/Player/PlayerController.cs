@@ -79,9 +79,11 @@ public class PlayerController : MonoBehaviour // Define la clase PlayerControlle
 
     public void JumpCheck()
     {
+        ani.SetBool("isJumping", false);
         // Si el jugador presiona espacio y está en el suelo, aplicamos el salto.
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        if (Input.GetKey(KeyCode.Space) && isGrounded)
         {
+            ani.SetBool("isJumping", true);
             velocity.y = Mathf.Sqrt(jumpHeight * -2 * gravity); // Calculamos la velocidad necesaria para alcanzar la altura del salto.
         }
     }
