@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    public int damage = 20; // Daño que hace la bala al impactar con un enemigo
+    public int damage = 25; // Daño que hace la bala al impactar con un enemigo
 
     // Este método se ejecuta cuando la bala colisiona con otro objeto
     private void OnCollisionEnter(Collision collision)
@@ -22,8 +22,6 @@ public class Bullet : MonoBehaviour
         Destroy(this.gameObject, 1f);
     }
 
-    // El método Update no tiene ninguna implementación en este caso, pero se mantiene en el código
-    // por si quieres agregar funcionalidades adicionales en el futuro.
     void Update()
     {
 

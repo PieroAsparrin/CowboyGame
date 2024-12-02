@@ -5,45 +5,105 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public Text ammoText; // Referencia al componente Text que muestra la cantidad de munición en pantalla.
+    public Text ammoText;         // Referencia al componente Text para la cantidad de munición.
+    public Slider healthSlider;   // Referencia al Slider que representa la salud del jugador.
+    private float maxHealth = 100f; // Salud máxima del jugador.
+    public float currentHealth;   // Salud actual del jugador.
 
-    public Image healthImage; // Referencia a la barra de salud que se actualizará visualmente.
-    public float maxHealth; // Valor máximo de salud del jugador.
-    public float currendHealth; // Salud actual del jugador.
+    public static GameManager Instance { get; private set; } // Instancia estática del GameManager.
 
-    public static GameManager Instance { get; private set; } // Instancia estática para acceder al GameManager desde otros scripts.
-
-    public int gunAmmo = 14; // Cantidad inicial de munición del arma.
+    public int gunAmmo = 7;       // Cantidad de balas en el cargador (máximo por cargador).
+    public int bagAmmo = 50;      // Cantidad de balas totales en la bolsa.
+    private int maxGunAmmo = 7;   // Capacidad máxima del cargador.
 
     private void Awake()
     {
-        Instance = this; // Asigna la instancia estática del GameManager a este objeto.
+        Instance = this; // Asigna esta instancia como la instancia estática.
     }
 
     private void Start()
     {
-        // Verifica que la salud actual sea válida al inicio.
-        if (currendHealth <= 0 || currendHealth > maxHealth)
+        if (currentHealth <= 0 || currentHealth > maxHealth)
         {
-            currendHealth = maxHealth; // Restablece a la salud máxima si la salud actual es inválida.
+            currentHealth = maxHealth; // Establece la salud inicial al máximo.
         }
 
-        // Actualiza la barra de salud para reflejar el estado inicial.
-        healthImage.fillAmount = currendHealth / maxHealth; // Rellena la barra de salud en base a la salud actual y máxima.
+        healthSlider.maxValue = maxHealth; // Configura el valor máximo del Slider.
+        healthSlider.value = currentHealth; // Configura el valor inicial del Slider.
+
+        UpdateAmmoText(); // Actualiza el texto inicial de munición.
     }
 
     private void Update()
     {
-        ammoText.text = gunAmmo.ToString(); // Actualiza el texto que muestra la cantidad de munición disponible.
+        ammoText.text = gunAmmo.ToString() + " I " + bagAmmo.ToString(); // Actualiza el texto de munición.
 
-        if (Input.GetKeyDown(KeyCode.I)) reduceHealth(); // Si se presiona la tecla 'I', se reduce la salud del jugador.
+        // Controles para daño y curación.
+        if (Input.GetKeyDown(KeyCode.I)) TakeDamage(10f); // Reduce salud en 10 al presionar 'I'.
+        if (Input.GetKeyDown(KeyCode.K)) Heal(10f);       // Aumenta salud en 10 al presionar 'K'.
+
+        // Recarga manual al presionar 'R'.
+        if (Input.GetKeyDown(KeyCode.R)) Reload();
+
+        // Comprueba si el cargador está vacío para recargar automáticamente.
+        if (gunAmmo <= 0)
+        {
+            AutoReload();
+        }
     }
 
-    private void reduceHealth()
+    // Método para reducir la salud.
+    public void TakeDamage(float damage)
     {
-        currendHealth -= 1; // Reduce la salud en 1.
-        if (currendHealth < 0) currendHealth = 0; // Asegura que la salud no sea negativa.
+        if (currentHealth <= 0) return; // Si ya está a 0, no hacer nada.
 
-        healthImage.fillAmount = currendHealth / maxHealth; // Actualiza la barra de salud en función de la nueva salud.
+        currentHealth -= damage; // Reduce la salud.
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth); // Asegura que no sea menor a 0.
+
+        UpdateHealthBar(); // Actualiza el Slider de salud.
+    }
+
+    // Método para curar.
+    public void Heal(float amount)
+    {
+        if (currentHealth >= maxHealth) return; // Si ya está al máximo, no hacer nada.
+
+        currentHealth += amount; // Aumenta la salud.
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth); // Asegura que no exceda el máximo.
+
+        UpdateHealthBar(); // Actualiza el Slider de salud.
+    }
+
+    // Método para actualizar la barra de salud visual.
+    private void UpdateHealthBar()
+    {
+        healthSlider.value = currentHealth; // Actualiza el valor del Slider según la salud actual.
+    }
+
+    // Método para recargar manualmente el arma.
+    public void Reload()
+    {
+        int bulletsNeeded = maxGunAmmo - gunAmmo; // Calcula las balas que faltan para llenar el cargador.
+        int bulletsToReload = Mathf.Min(bulletsNeeded, bagAmmo); // Calcula cuántas balas tomar de la bolsa.
+
+        gunAmmo += bulletsToReload; // Agrega las balas recargadas al cargador.
+        bagAmmo -= bulletsToReload; // Resta las balas recargadas de la bolsa.
+
+        UpdateAmmoText(); // Actualiza el texto de munición.
+    }
+
+    // Método para recargar automáticamente cuando el cargador está vacío.
+    private void AutoReload()
+    {
+        if (bagAmmo > 0) // Solo recarga si hay balas en la bolsa.
+        {
+            Reload();
+        }
+    }
+
+    // Método para actualizar el texto de munición.
+    private void UpdateAmmoText()
+    {
+        ammoText.text = gunAmmo.ToString() + "|" + bagAmmo.ToString(); // Actualiza el texto con el cargador y la bolsa.
     }
 }
