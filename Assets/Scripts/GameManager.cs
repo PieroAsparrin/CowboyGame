@@ -47,7 +47,6 @@ public class GameManager : MonoBehaviour
 
         // Recarga manual al presionar 'R'.
         if (Input.GetKeyDown(KeyCode.R)) Reload();
-
         // Comprueba si el cargador está vacío para recargar automáticamente.
         if (gunAmmo <= 0)
         {
@@ -64,6 +63,11 @@ public class GameManager : MonoBehaviour
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth); // Asegura que no sea menor a 0.
 
         UpdateHealthBar(); // Actualiza el Slider de salud.
+
+        if (currentHealth <= 0)
+        {
+            HandlePlayerDeath(); // Llama a la función para manejar la muerte del jugador.
+        }
     }
 
     // Método para curar.
@@ -109,5 +113,18 @@ public class GameManager : MonoBehaviour
     {
         gunAmmoText.text = gunAmmo.ToString() + " I ";
         bagAmmoText.text = "  "+bagAmmo.ToString();
+    }
+
+    private void HandlePlayerDeath()
+    {
+        // Buscar el objeto del jugador con el tag "Player" y destruirlo.
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+        {
+            Destroy(player); // Destruye el objeto jugador.
+            Debug.Log("El jugador ha muerto.");
+        }
+
+        // Aquí puedes añadir otras acciones como mostrar una pantalla de Game Over o reiniciar el nivel.
     }
 }

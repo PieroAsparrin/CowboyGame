@@ -15,8 +15,9 @@ public class KnifeEnemy : MonoBehaviour
     void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
-        playerTransform = FindAnyObjectByType<PlayerController>().transform; // Encuentra el Transform del jugador.
         ani = GetComponent<Animator>(); // Inicializa el Animator.
+        playerTransform = FindAnyObjectByType<PlayerController>().transform; // Encuentra el Transform del jugador.
+        
     }
 
     void Update()

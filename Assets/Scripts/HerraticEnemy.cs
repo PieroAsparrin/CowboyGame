@@ -27,6 +27,10 @@ public class HerraticEnemy : MonoBehaviour
         {
             ComportamientoEnemigo();
         }
+        else
+        {
+
+        }
     }
 
     public void ComportamientoEnemigo()
@@ -87,17 +91,38 @@ public class HerraticEnemy : MonoBehaviour
         }
     }
 
-    public void FinalAni()
+    public void Final_Ani()
     {
         ani.SetBool("attack", false);
+        atacando = false;
     }
+
+    /*
+    void OnTriggerEnter(Collider other)
+    {
+        Debug.Log($"Enemy collided with {other.gameObject.name}");
+
+        if (other.CompareTag("Bullet"))
+        {
+            Debug.Log("Enemy hit by a bullet.");
+            Bullet bullet = other.GetComponent<Bullet>();
+            if (bullet != null)
+            {
+                TakeDamage(bullet.GetDamage());
+            }
+        }
+    }
+    */
 
     // Método para recibir daño.
     public void TakeDamage(float damage)
     {
+        Debug.Log($"Current Health: {health}");
+
         if (health <= 0) return;
 
         health -= damage;
+        Debug.Log($"HEALTH: {health}");
 
         if (health <= 0)
         {
@@ -106,15 +131,25 @@ public class HerraticEnemy : MonoBehaviour
         }
     }
 
+
     // Corrutina para manejar la muerte y destruir el objeto.
     private IEnumerator Die()
     {
-        ani.SetBool("death", true); // Reproduce la animación de muerte.
-        yield return new WaitForSeconds(ani.GetCurrentAnimatorStateInfo(0).length); // Espera a que termine la animación.
-        Destroy(gameObject); // Destruye el objeto.
+        ani.SetBool("death", true); // Inicia la animación de muerte.
+
+        // Espera hasta que la animación de muerte esté realmente activa.
+        while (!ani.GetCurrentAnimatorStateInfo(0).IsName("Death"))
+        {
+            yield return null; // Espera un frame antes de volver a comprobar.
+        }
+
+        // Una vez activa, espera a que termine.
+        yield return new WaitForSeconds(ani.GetCurrentAnimatorStateInfo(0).length);
+
+        Debug.Log("¡ENEMY DESTROYED!");
+        Destroy(gameObject); // Destruye el enemigo después de la animación.
     }
 }
-
 /*
 EXAMEN
 Mis cambios

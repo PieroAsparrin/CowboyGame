@@ -6,6 +6,8 @@ TagManager:
   tags:
   - GunAmmo
   - Enemy
+  - Melee
+  - Bullet
   layers:
   - Default
   - TransparentFX

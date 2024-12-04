@@ -164,4 +164,23 @@ public class PlayerController : MonoBehaviour // Define la clase PlayerControlle
             ani.SetBool("walkingLeft", false);
         }
     }
+
+    void OnTriggerEnter(Collider other)
+    {
+        // Comprobamos si el objeto que colisionó tiene el tag "Melee".
+        if (other.CompareTag("Melee"))
+        {
+            // Obtenemos el componente Knife del objeto que colisionó.
+            Knife knife = other.GetComponent<Knife>();
+
+            if (knife != null)
+            {
+                // Obtenemos el daño del Knife y lo aplicamos al jugador.
+                float damage = knife.GetDamage();
+                GameManager.Instance.TakeDamage(damage); // Llamamos al método del GameManager para reducir la salud.
+                Debug.Log("¡Jugador recibió " + damage + " de daño!");
+            }
+        }
+    }
+
 }
