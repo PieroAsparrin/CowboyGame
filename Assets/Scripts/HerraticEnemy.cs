@@ -14,7 +14,6 @@ public class HerraticEnemy : MonoBehaviour
     public bool atacando;
 
     public float health = 100f; // Vida inicial del enemigo.
-
     void Start()
     {
         ani = GetComponent<Animator>();
@@ -26,10 +25,6 @@ public class HerraticEnemy : MonoBehaviour
         if (health > 0)
         {
             ComportamientoEnemigo();
-        }
-        else
-        {
-
         }
     }
 
@@ -130,7 +125,6 @@ public class HerraticEnemy : MonoBehaviour
             StartCoroutine(Die());
         }
     }
-
 
     // Corrutina para manejar la muerte y destruir el objeto.
     private IEnumerator Die()

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public Text gunAmmoText;// Referencia al componente Text para la cantidad de munición.
-    public Text bagAmmoText;
+    public Text bagAmmoText;// Referencia al componente Texte para la cantidad de munición en la bolsa.
 
     public Slider healthSlider;// Referencia al Slider que representa la salud del jugador.
     private float maxHealth = 100f;// Salud máxima del jugador.
@@ -14,9 +14,9 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance { get; private set; } // Instancia estática del GameManager.
 
-    public int gunAmmo = 7;       // Cantidad de balas en el cargador (máximo por cargador).
-    public int bagAmmo = 50;      // Cantidad de balas totales en la bolsa.
-    private int maxGunAmmo = 7;   // Capacidad máxima del cargador.
+    public int gunAmmo = 7; // Cantidad de balas en el cargador (máximo por cargador).
+    public int bagAmmo = 50; // Cantidad de balas totales en la bolsa.
+    private int maxGunAmmo = 7; // Capacidad máxima del cargador.
 
     private void Awake()
     {

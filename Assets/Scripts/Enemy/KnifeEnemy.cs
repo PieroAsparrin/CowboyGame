@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -7,54 +6,109 @@ public class KnifeEnemy : MonoBehaviour
 {
     private NavMeshAgent navMeshAgent; // Referencia al NavMeshAgent.
     private Transform playerTransform; // Transform del jugador.
-    private bool hasSpottedPlayer = false; // Bandera para saber si el enemigo ya detectó al jugador.
+    private bool isAttacking = false; // Bandera para saber si el enemigo está atacando.
 
     public float detectionRange = 5f; // Distancia para detectar al jugador.
+    public float attackRange = 1f; // Distancia mínima para atacar al jugador.
     public Animator ani; // Referencia al Animator.
+
+    public float health = 100f; // Vida inicial del enemigo.
 
     void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
-        ani = GetComponent<Animator>(); // Inicializa el Animator.
-        playerTransform = FindAnyObjectByType<PlayerController>().transform; // Encuentra el Transform del jugador.
-        
+        ani = GetComponent<Animator>();
+        playerTransform = FindAnyObjectByType<PlayerController>()?.transform;
+
+        if (playerTransform == null)
+        {
+            Debug.LogError("PlayerController not found in the scene.");
+        }
     }
 
     void Update()
     {
+        if (health <= 0) return; // No realizar acciones si está muerto.
+
         float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
 
-        if (distanceToPlayer <= detectionRange || hasSpottedPlayer)
+        if (distanceToPlayer > detectionRange)
         {
-            // Si está dentro del rango o ya lo detectó, lo persigue.
-            hasSpottedPlayer = true; // Marca que el jugador ha sido detectado.
-
-            // Gira hacia el jugador.
-            Vector3 directionToPlayer = playerTransform.position - transform.position;
-            directionToPlayer.y = 0; // Evita rotaciones en el eje Y.
-            Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, 200 * Time.deltaTime);
-
-            // Persigue al jugador.
-            navMeshAgent.destination = playerTransform.position;
-
-            // Animación de correr.
-            ani.SetBool("run", true);
+            Idle();
+        }
+        else if (distanceToPlayer > attackRange)
+        {
+            ChasePlayer();
         }
         else
         {
-            // Si no ha detectado al jugador y está fuera del rango, se detiene.
-            navMeshAgent.destination = transform.position;
-            ani.SetBool("run", false);
+            AttackPlayer();
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void Idle()
     {
-        if (collision.transform.CompareTag("Player"))
-        {
+        // El enemigo está quieto.
+        navMeshAgent.isStopped = true;
+        ani.SetBool("run", false);
+        ani.SetBool("attack", false);
+    }
 
+    private void ChasePlayer()
+    {
+        // El enemigo persigue al jugador.
+        navMeshAgent.isStopped = false;
+        navMeshAgent.destination = playerTransform.position;
+
+        ani.SetBool("run", true);
+        ani.SetBool("attack", false);
+    }
+
+    private void AttackPlayer()
+    {
+        // El enemigo ataca si está en rango.
+        if (isAttacking) return; // Evita múltiples ataques al mismo tiempo.
+
+        navMeshAgent.isStopped = true; // Detener el movimiento.
+        ani.SetBool("run", false);
+        ani.SetBool("attack", true);
+
+        isAttacking = true;
+        StartCoroutine(ResetAttack()); // Reinicia el ataque después de un tiempo.
+    }
+
+    private IEnumerator ResetAttack()
+    {
+        yield return new WaitForSeconds(1f); // Tiempo entre ataques.
+        isAttacking = false;
+    }
+
+    public void TakeDamage(float damage)
+    {
+        if (health <= 0) return;
+
+        health -= damage;
+        Debug.Log($"Enemy Health: {health}");
+
+        if (health <= 0)
+        {
+            health = 0;
+            StartCoroutine(Die());
         }
     }
 
+    private IEnumerator Die()
+    {
+        navMeshAgent.isStopped = true;
+        ani.SetBool("death", true);
+
+        // Esperar a que la animación de muerte termine.
+        while (!ani.GetCurrentAnimatorStateInfo(0).IsTag("Death"))
+        {
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(ani.GetCurrentAnimatorStateInfo(0).length);
+        Destroy(gameObject);
+    }
 }
