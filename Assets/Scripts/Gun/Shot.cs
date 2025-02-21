@@ -16,6 +16,11 @@ public class Shot : MonoBehaviour
         if (Input.GetButtonDown("Fire1")) // Verifica si el jugador presiona el botón de disparo.
         {
             TryShoot(); // Intenta disparar si es posible.
+            AudioSource audioSource = gameObject.GetComponent<AudioSource>();
+            if (audioSource != null)
+            {
+                audioSource.PlayOneShot(audioSource.clip);
+            }
         }
     }
 

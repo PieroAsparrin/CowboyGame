@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -121,8 +122,7 @@ public class GameManager : MonoBehaviour
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (player != null)
         {
-            Destroy(player); // Destruye el objeto jugador.
-            Debug.Log("El jugador ha muerto.");
+            SceneManager.LoadScene("Reiniciar");
         }
 
         // Aquí puedes añadir otras acciones como mostrar una pantalla de Game Over o reiniciar el nivel.
